@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Foodies</title>
+  <link rel="icon" type="image/png" href="image/download.png">
+
+  <style>
+    /* === Navigation Bar Styling === */
+    nav {
+      background-color: #be4811;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: auto;
+      padding: 0.75rem 1rem;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #e63946;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      background-color: #fff0f0;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .logo:hover {
+      background-color: #e63946;
+      color: #fff;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 500;
+      transition: 0.3s;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+    }
+
+    .nav-links a:hover {
+      background-color: #fff;
+      color: #e63946;
+    }
+
+    #openLoginModal, #openSignupModal {
+      background: #d62828;
+      border-radius: 5px;
+      color: #fff;
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: white;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        background-color:black;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 200px;
+        padding: 1rem;
+        box-shadow: 0 8px 12px rgba(0,0,0,0.1);
+      }
+      .nav-links.active {
+        display: flex;
+      }
+      .hamburger {
+        display: block;
+      }
+    }
+
+    /* === Video Hero Section === */
+    .video-hero {
+      position: relative;
+      height: 60vh;
+      overflow: hidden;
+    }
+
+    .video-hero video {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    .video-hero .heading {
+      position: absolute;
+      bottom: 40%;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-size: 3rem;
+      font-weight: bold;
+      text-shadow: 2px 2px 10px rgba(0,0,0,0.7);
+      text-align: center;
+    }
+
+    /* === Header Section === */
+    header {
+      text-align: center;
+      padding: 60px 20px;
+      background-color: #ffffff;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      color: #e63946;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      background-color: #e63946;
+      color: white;
+      padding: 12px 25px;
+      text-decoration: none;
+      border-radius: 25px;
+      transition: background 0.3s ease;
+      font-weight: 600;
+    }
+
+    .btn:hover {
+      background-color: #d62828;
+    }
+
+    /* === Modal Styling (Login & Signup) === */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+    }
+
+    .modal-content {
+      background: white;
+      margin: 10% auto;
+      padding: 2rem;
+      width: 90%;
+      max-width: 400px;
+      border-radius: 10px;
+      text-align: center;
+      position: relative;
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 1.5rem;
+      color: #999;
+      cursor: pointer;
+    }
+
+    .modal-content input[type="text"],
+    .modal-content input[type="email"],
+    .modal-content input[type="password"] {
+      width: 90%;
+      padding: 0.6rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .modal-content input[type="submit"] {
+      background: #e63946;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.5rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .modal-content input[type="submit"]:hover {
+      background: #d62828;
+    }
+
+    .modal-content p {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .modal-content p a {
+      color: #e63946;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* === Food Cards Section === */
+    .food-section {
+      padding: 50px 20px;
+      background-color: #fffaf0;
+      text-align: center;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .section-title {
+      font-size: 2em;
+      margin-bottom: 30px;
+      color: #d35400;
+      font-weight: 700;
+    }
+
+    .card-container {
+      display: flex;
+      gap: 25px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .card {
+      flex: 0 0 auto;
+      width: 240px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      padding: 15px;
+      text-align: center;
+      scroll-snap-align: start;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    }
+
+    .card img {
+      width: 100%;
+      height: 160px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .card h3 {
+      margin: 10px 0 5px;
+      font-size: 1.2em;
+      color: #333;
+    }
+
+    .card p {
+      color: #666;
+      font-size: 0.9em;
+      margin-bottom: 10px;
+    }
+
+    .price {
+      display: block;
+      font-size: 1.1em;
+      font-weight: 600;
+      color: #e67e22;
+      margin-bottom: 10px;
+    }
+
+    .order-btn {
+      background-color: #e67e22;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
+    }
+
+    .order-btn:hover {
+      background-color: #cf711f;
+    }
+/* === Order Modal === */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0;
+  width: 100%; 
+  height: 800px;
+  background: rgba(0,0,0,0.6);
+  overflow-y: auto;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content img.order-img {
+  width: 50%;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.modal-content label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.modal-content input,
+.modal-content textarea {
+  width: 100%;
+  margin-top: 5px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.modal-content .order-btn {
+  background: #e63946;
+  color: white;
+  border: none;
+  margin-top: 1rem;
+  padding: 0.7rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.modal-content .order-btn:hover {
+  background: #d62828;
+}
+
+.close {
+  float: right;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #333;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: scale(0.9);}
+  to {opacity: 1; transform: scale(1);}
+}
+
+/* Orders Section */
+.orders-section {
+  padding: 60px 20px;
+  background: #fff8f5;
+  text-align: center;
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.order-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background: #fff;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  width: 90%;
+  max-width: 500px;
+}
+
+.order-card img {
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-right: 15px;
+}
+
+.order-info {
+  text-align: left;
+}
+
+.status {
+  display: inline-block;
+  margin-top: 5px;
+  color: green;
+  font-weight: bold;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .order-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .order-card img {
+    margin-bottom: 10px;
+  }
+}
+/* Cancel Order Button */
+.cancel-btn {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background-color 0.3s;
+}
+
+.cancel-btn:hover {
+  background-color: #d93636;
+}
+
+/* Fade-out animation when cancelling */
+.fade-out {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+
+    /* === Footer Styling === */
+    .site-footer {
+      background: #24262b;
+      color: #bbb;
+      padding: 2rem 1rem;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .footer-column {
+      flex: 1 1 200px;
+    }
+
+    .footer-column h3 {
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-column ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-column ul li {
+      margin-bottom: 0.3rem;
+    }
+
+    .footer-column ul li a {
+      color: #bbb;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-column ul li a:hover {
+      color: #fff;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      border-top: 1px solid #444;
+      margin-top: 2rem;
+      padding-top: 1rem;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .footer-container {
+        flex-direction: row;
+        align-items: center;
+        text-align: center;
+      }
+    } 
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav>
+  <div class="nav-container">
+    <a href="#" class="logo">🍟Foodies</a>
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="orders.html">Orders</a></li>
+      <li><a href="#" id="openLoginModal">Login</a></li>
+    </ul>
+    <div class="hamburger">&#9776;</div>
+  </div>
+</nav>
+
+<!-- Signup Modal -->
+<div id="signupModal" class="modal">
+  <div class="modal-content">
+    <span class="close" data-modal="signupModal">&times;</span>
+    <h2>Sign Up</h2>
+    <form id="signupForm">
+      <input type="text" id="signupName" placeholder="Full Name" required><br>
+      <input type="email" id="signupEmail" placeholder="Email Address" required><br>
+      <input type="password" id="signupPassword" placeholder="Password" required><br>
+      <input type="submit" value="Create Account">
+    </form>
+    <p>Already have an account? <a href="#" id="switchToLogin">Login</a></p>
+  </div>
+</div>
+
+<!-- Login Modal -->
+<div id="loginModal" class="modal">
+  <div class="modal-content">
+    <span class="close" data-modal="loginModal">&times;</span>
+    <h2>Login</h2>
+    <form id="loginForm">
+      <input type="email" id="loginEmail" placeholder="Enter Email" required><br>
+      <input type="password" id="loginPassword" placeholder="Enter Password" required><br>
+      <input type="submit" value="Login">
+    </form>
+    <p>Don’t have an account? <a href="#" id="switchToSignup">Sign Up</a></p>
+  </div>
+</div>
+
+  <!-- Video Hero -->
+  <div class="video-hero">
+    <video id="heroVideo" autoplay muted loop playsinline>
+      <source src="video.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <h1 class="heading">This is a Good Food</h1>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <h1>Fast & Fresh Food Delivery</h1>
+    <p>Delicious meals delivered straight to your door</p>
+    <a href="#menu" class="btn">Order Now</a>
+  </header>
+
+  <!-- Food Cards Section -->
+  <section    id="menu"   class="food-section" >
+    <h2 class="section-title">🍴 Our Special Dishes</h2>
+    <div class="card-container">
+      <div class="card">
+        <img src="image/card.jpeg" alt="Grilled Chicken">
+        <h3>Grilled Chicken</h3>
+        <p>Juicy grilled chicken served with fresh salad and herbs.</p>
+        <span class="price">₹299</span>
+        <button class="order-btn">Order Now</button>
+      </div>
+
+      <div class="card">
+        <img src="image/card1.jpeg" alt="Veggie Pizza">
+        <h3>Veggie Pizza</h3>
+        <p>Cheesy pizza topped with garden-fresh vegetables.</p>
+        <span class="price">₹249</span>
+        <button class="order-btn">Order Now</button>
+      </div>
+
+      <div class="card">
+        <img src="image/card2.jpeg" alt="Pasta Alfredo">
+        <h3>Pasta Alfredo</h3>
+        <p>Creamy Alfredo pasta with parmesan and garlic sauce.</p>
+        <span class="price">₹199</span>
+        <button class="order-btn">Order Now</button>
+      </div>
+
+      <div class="card">
+        <img src="image/card5.jpg" alt="Cheeseburger">
+        <h3>Cheeseburger</h3>
+        <p>Classic cheeseburger with crispy fries and sauces.</p>
+        <span class="price">₹179</span>
+        <button class="order-btn">Order Now</button>
+      </div>
+
+      <div class="card">
+        <img src="image/card4.jpeg" alt="Chocolate Cake">
+        <h3>Chocolate Cake</h3>
+        <p>Rich and moist chocolate cake topped with ganache.</p>
+        <span class="price">₹149</span>
+        <button class="order-btn">Order Now</button>
+      </div>
+    </div>
+  </section>
+  
+
+<!-- 🛒 Order Modal -->
+<div id="orderModal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="closeOrderModal">&times;</span>
+    <h2 id="orderTitle">Order Food</h2>
+    <img id="orderImage" src="" alt="" class="order-img">
+    <p id="orderDesc"></p>
+    <span id="orderPrice" class="price"></span>
+
+    <form id="orderForm">
+      <label for="quantity">Quantity:</label>
+      <input type="number" id="quantity" min="1" value="1" required>
+
+      <label for="address">Delivery Address:</label>
+      <textarea id="address" placeholder="Enter your address..." required></textarea>
+
+      <button type="submit" class="order-btn">Confirm Order</button>
+    </form>
+  </div>
+</div>
+
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-column about">
+        <h3>About Us</h3>
+        <p>We serve delicious, freshly prepared meals to satisfy every craving. Taste the best at Foodies!</p>
+        <h4>It  owned by yuvaraj k</h4>
+      </div>
+      <div class="footer-column">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Menu</a></li>
+          <li><a href="#">Offers</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-column contact">
+        <h3>Contact Us</h3>
+        <p>📍 Chennai, India</p>
+        <p>📞 +91 98765 43210</p>
+        <p>✉️ support@foodies.com</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2025 Foodies — All Rights Reserved.
+    </div>
+  </footer>
+
+
+<script>
+  
+// ✅ Navigation Hamburger (Mobile Menu)
+const hamburger = document.querySelector('.hamburger');
+const navLinks = document.querySelector('.nav-links');
+hamburger.addEventListener('click', () => navLinks.classList.toggle('active'));
+
+// ✅ Get Elements
+const loginModal = document.getElementById('loginModal');
+const signupModal = document.getElementById('signupModal');
+const openLoginModal = document.getElementById('openLoginModal');
+const closeButtons = document.querySelectorAll('.close');
+const switchToSignup = document.getElementById('switchToSignup');
+const switchToLogin = document.getElementById('switchToLogin');
+
+// ✅ Open Login Modal
+openLoginModal.addEventListener('click', (e) => {
+  e.preventDefault();
+  loginModal.style.display = 'block';
+});
+
+// ✅ Close Modals on X button
+closeButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.getElementById(btn.dataset.modal).style.display = 'none';
+  });
+});
+
+// ✅ Close when clicking outside the modal
+window.addEventListener('click', (e) => {
+  if (e.target === loginModal) loginModal.style.display = 'none';
+  if (e.target === signupModal) signupModal.style.display = 'none';
+});
+
+// ✅ Switch: Login → Signup
+switchToSignup.addEventListener('click', (e) => {
+  e.preventDefault();
+  loginModal.style.display = 'none';
+  signupModal.style.display = 'block';
+});
+
+// ✅ Switch: Signup → Login
+switchToLogin.addEventListener('click', (e) => {
+  e.preventDefault();
+  signupModal.style.display = 'none';
+  loginModal.style.display = 'block';
+});
+
+// ✅ SIGNUP SAVE TO LOCALSTORAGE
+document.getElementById('signupForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const name = document.getElementById('signupName').value;
+  const email = document.getElementById('signupEmail').value;
+  const password = document.getElementById('signupPassword').value;
+
+  const userData = { name, email, password };
+  localStorage.setItem('foodiesUser', JSON.stringify(userData));
+
+  alert("✅ Account created successfully! Please login.");
+
+  signupModal.style.display = 'none';
+  loginModal.style.display = 'block';
+});
+
+// ✅ LOGIN CHECK
+document.getElementById('loginForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const savedUser = JSON.parse(localStorage.getItem('foodiesUser'));
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
+
+  if (!savedUser) {
+    alert("⚠ No user found. Please sign up first.");
+    return;
+  }
+
+  if (email === savedUser.email && password === savedUser.password) {
+    alert(`✅ Welcome, ${savedUser.name}!`);
+    loginModal.style.display = 'none';
+    localStorage.setItem("isLoggedIn", "true");
+    updateNavbar();
+  } else {
+    alert("❌ Incorrect Email or Password");
+  }
+});
+
+// === Order Modal Logic ===
+const orderButtons = document.querySelectorAll('.order-btn');
+const orderModal = document.getElementById('orderModal');
+const closeOrderModal = document.getElementById('closeOrderModal');
+const orderTitle = document.getElementById('orderTitle');
+const orderImage = document.getElementById('orderImage');
+const orderDesc = document.getElementById('orderDesc');
+const orderPrice = document.getElementById('orderPrice');
+const orderForm = document.getElementById('orderForm');
+
+// Open Order Modal
+orderButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const card = btn.closest('.card');
+    orderTitle.textContent = card.querySelector('h3').textContent;
+    orderImage.src = card.querySelector('img').src;
+    orderDesc.textContent = card.querySelector('p').textContent;
+    orderPrice.textContent = card.querySelector('.price').textContent;
+    orderModal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  });
+});
+
+// Close Modal
+closeOrderModal.addEventListener('click', () => {
+  orderModal.style.display = 'none';
+  document.body.style.overflow = 'auto';
+});
+
+window.addEventListener('click', e => {
+  if (e.target === orderModal) {
+    orderModal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }
+});
+
+// ✅ Save Order & Redirect to Orders Page
+orderForm.addEventListener('submit', e => {
+  e.preventDefault();
+  
+  const orderData = {
+    name: orderTitle.textContent,
+    image: orderImage.src,
+    desc: orderDesc.textContent,
+    price: orderPrice.textContent,
+    quantity: document.getElementById('quantity').value,
+    address: document.getElementById('address').value,
+    status: "Order Placed ✅"
+  };
+
+  let orders = JSON.parse(localStorage.getItem("foodOrders")) || [];
+  orders.push(orderData);
+  localStorage.setItem("foodOrders", JSON.stringify(orders));
+
+  alert("✅ Order Confirmed!");
+  orderModal.style.display = 'none';
+  document.body.style.overflow = 'auto';
+
+  window.location.href = "orders.html"; // ✅ Go to Orders Page
+});
+</script>
+
+</body>
+</html>
