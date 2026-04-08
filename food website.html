@@ -7,6 +7,10 @@
   <link rel="icon" type="image/png" href="image/download.png">
 
   <style>
+    *{
+      padding: 0;
+      margin: 0;
+    }
     /* === Navigation Bar Styling === */
     nav {
       background-color: #be4811;
@@ -129,7 +133,7 @@
     header {
       text-align: center;
       padding: 60px 20px;
-      background-color: #ffffff;
+      background-color:bisque;
       font-family: 'Poppins', sans-serif;
     }
 
@@ -462,6 +466,50 @@
   transform: scale(0.95);
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
+/* ✅ Safety Section */
+.safety-section {
+  padding: 50px 20px;
+  background: #fff7e6;
+  text-align: center;
+}
+
+.safety-title {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #ff7b00;
+}
+
+.safety-subtitle {
+  font-size: 18px;
+  color: #444;
+  margin-bottom: 40px;
+}
+
+.safety-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.safety-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: 0.3s;
+}
+
+.safety-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.14);
+}
+
+.icon {
+  font-size: 40px;
+}
 
 
     /* === Footer Styling === */
@@ -653,6 +701,34 @@
   </div>
 </div>
 
+<!-- ✅ Delivery & Safety Assurance Section -->
+<section class="safety-section">
+  <h2 class="safety-title">🚚 Delivery & Safety Assurances</h2>
+  <p class="safety-subtitle">Your health and trust are our top priority</p>
+
+  <div class="safety-cards">
+
+    <div class="safety-card">
+      <span class="icon">✅</span>
+      <h3>100% Fresh Ingredients</h3>
+      <p>We source only farm-fresh veggies and high-quality ingredients.</p>
+    </div>
+
+    <div class="safety-card">
+      <span class="icon">✅</span>
+      <h3>30-Minute Fast Delivery</h3>
+      <p>Our delivery partners ensure your food arrives on time.</p>
+    </div>
+
+    <div class="safety-card">
+      <span class="icon">✅</span>
+      <h3>Safe & Sealed Packaging</h3>
+      <p>Every food packet is sealed to avoid contamination.</p>
+    </div>
+
+  </div>
+</section>
+
 
   <!-- Footer -->
   <footer class="site-footer">
@@ -696,7 +772,7 @@ const loginModal = document.getElementById('loginModal');
 const signupModal = document.getElementById('signupModal');
 const openLoginModal = document.getElementById('openLoginModal');
 const closeButtons = document.querySelectorAll('.close');
-const switchToSignup = document.getElementById('switchToSignup');g
+const switchToSignup = document.getElementById('switchToSignup');
 const switchToLogin = document.getElementById('switchToLogin');
 
 // ✅ Open Login Modal
